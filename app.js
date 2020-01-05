@@ -236,6 +236,12 @@ const App = (function(ItemCtrl,UICtrl){
 
     // Update Item Event
     document.querySelector(UISelectors.updateBtn).addEventListener('click', itemUpdateSubmit);
+
+    // Back Button Event
+    document.querySelector(UISelectors.backBtn).addEventListener('click', UICtrl.clearEditState);
+
+    // Delete Item Event
+    document.querySelector(UISelectors.deleteBtn).addEventListener('click', itemDeleteSubmit);
   }
 
   // Add Item itemAddSubmit
@@ -305,6 +311,17 @@ const App = (function(ItemCtrl,UICtrl){
     UICtrl.showTotalCalories(totalCalories);
 
     UICtrl.clearEditState();
+
+    e.preventDefault();
+  }
+
+  // Delete Button Event
+  const itemDeleteSubmit = function(e){
+    // get current Item
+    const currentItem = ItemCtrl.getCurrentItem();
+
+    // Delete from data structure
+    ItemCtrl.deleteItem(currentItem);
 
     e.preventDefault();
   }
