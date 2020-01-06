@@ -1,47 +1,30 @@
 // Storage Controller 
 const StorageCtrl = (function(){
+  // public methods
   return {
-    // Public Methods
     storeItem: function(item){
       let items;
 
-      //Check if any items in local storage
+      // check if any items are in localStorage
       if(localStorage.getItem('items') === null){
-        
         items = [];
-        
-        // push new item
+        //Push new item
         items.push(item);
-
         //set localStorage
         localStorage.setItem('items', JSON.stringify(items));
       } else {
-        // get current item list
+        // Get what is already in LocalStorage
         items = JSON.parse(localStorage.getItem('items'));
         
-        // push new item
+        // Push new item
         items.push(item);
 
-         //set localStorage
+        //Reset localStorage
         localStorage.setItem('items', JSON.stringify(items));
       }
-    },
-    getItemsFromStorage: function(){
-      let items;
-      
-      if(localStorage.getItem('items') === null){
-      
-        items = [];
-      
-      } else {
-
-        items = JSON.parse(localStorage.getItem('items'));
-      }
-
-      return items;
     }
   }
-})()
+})();
 
 // Item Controller
 const ItemCtrl = (function(){
@@ -54,7 +37,11 @@ const ItemCtrl = (function(){
 
   // Data structure / State
   const data = {
-    items: StorageCtrl.getItemsFromStorage(),
+    items: [
+      // {id: 0, name: 'Steak dinner', calories:1200},
+      // {id: 1, name: 'Cookie', calories:400},
+      // {id: 2, name: 'Eggs', calories:300}
+    ],
     currentItem: null,
     totalCalories: 0
   };
@@ -311,7 +298,7 @@ const App = (function(ItemCtrl,StorageCtrl,UICtrl){
     // Delete Item Event
     document.querySelector(UISelectors.deleteBtn).addEventListener('click', itemDeleteSubmit);
 
-    // Delete Item Event
+    // Delete all Items Event
     document.querySelector(UISelectors.clearBtn).addEventListener('click', clearAllItemsClick);
   }
 
@@ -328,17 +315,13 @@ const App = (function(ItemCtrl,StorageCtrl,UICtrl){
       //add item to ui list
       UICtrl.addListItem(newItem);
 
-      //Store in local storage
-      StorageCtrl.storeItem(newItem);
-
       // Get total calories
       const totalCalories = ItemCtrl.getTotalCalories();
       // Add total calories to UI
       UICtrl.showTotalCalories(totalCalories);
 
-      //Store in local storage
+      //Store in localStorage
       StorageCtrl.storeItem(newItem);
-
       // clear fields
       UICtrl.clearInput();
     }
